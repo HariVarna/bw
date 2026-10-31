@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}System Information{% endblock %}
+{% block page_title %}Architecture & Technical Specifications{% endblock %}
+
+{% block content %}
+
+<!-- System Architecture & Project Identification -->
+<div class="content-grid-2">
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        Institutional Research Baseline
+      </h3>
+    </div>
+    <div class="card-body">
+      <div style="margin-bottom:16px;">
+        <h4 style="font-size:14px;font-weight:700;color:var(--text-primary);">School of Innovation (SoI) — AY 2026–27</h4>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Phase 3: Proof of Concept | Concept I01</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Project Vertical:</span>
+          <strong>Blockchain & Cryptographic Systems</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Batch:</span>
+          <strong>2025–29</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Faculty Mentor:</span>
+          <strong>Selva Kumar</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Student Investigators:</span>
+          <div style="text-align:right;font-weight:600;">
+            Hari Varna V S<br>
+            Harshavardini D<br>
+            Kavin Kumar V<br>
+            Mohanavel N
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding-top:4px;">
+          <span style="color:var(--text-muted);">Artifact Version:</span>
+          <span class="font-mono" style="font-weight:700;color:var(--primary);">v0.3.0-poc</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        Runtime Environment Diagnostics
+      </h3>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Python Runtime:</span>
+          <span class="font-mono" style="font-weight:600;">{{ env_info.python_version }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Host Platform:</span>
+          <span class="font-mono">{{ env_info.platform }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Cryptography Engine:</span>
+          <span class="font-mono">cryptography v{{ env_info.cryptography_version }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Image Processing:</span>
+          <span class="font-mono">Pillow v{{ env_info.pillow_version }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+          <span style="color:var(--text-muted);">Web Framework:</span>
+          <span class="font-mono">Flask v{{ env_info.flask_version }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding-top:4px;">
+          <span style="color:var(--text-muted);">Persistent Database:</span>
+          <span class="font-mono">SQLite 3 (WAL / thread-safe)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cryptographic Standards Card -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      Cryptographic Protocols & Architectural Guarantees
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Security Layer</th>
+            <th>Cryptographic Standard</th>
+            <th>Operational Purpose</th>
+            <th>Tamper Survivability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Digital Signatures</strong></td>
+            <td class="font-mono">Ed25519 (RFC 8032)</td>
+            <td>Signs every physical custody handover event by authenticated custodians.</td>
+            <td>128-bit security level; non-repudiation guaranteed.</td>
+          </tr>
+          <tr>
+            <td><strong>Block Hashing</strong></td>
+            <td class="font-mono">SHA-256 (FIPS PUB 180-4)</td>
+            <td>Chains consecutive block headers via immutable <code>prev_hash</code> links.</td>
+            <td>Second preimage and collision resistant.</td>
+          </tr>
+          <tr>
+            <td><strong>Event Tree Integrity</strong></td>
+            <td class="font-mono">Binary Merkle Tree</td>
+            <td>Rolls up all custody events inside each block into a cryptographic Merkle root.</td>
+            <td>Detects single-bit event alteration, deletion, or injection.</td>
+          </tr>
+          <tr>
+            <td><strong>Layer 1 Steganography</strong></td>
+            <td class="font-mono">Zero-Width Unicode</td>
+            <td>Invisible binary bit stream (ZWSP, ZWNJ, ZWJ) embedded in question paper text.</td>
+            <td>Survives digital copy-paste; stripped by manual retyping.</td>
+          </tr>
+          <tr>
+            <td><strong>Layer 2 Steganography</strong></td>
+            <td class="font-mono">Syntactic Permutations</td>
+            <td>Base-4 lexical and stylistic variations across instructions and questions.</td>
+            <td>Survives manual retyping and basic OCR.</td>
+          </tr>
+          <tr>
+            <td><strong>Layer 3 Watermarking</strong></td>
+            <td class="font-mono">Visual Micro-Pattern</td>
+            <td>16-bit binary micro-cell grid rendered in page margins and faint watermarks.</td>
+            <td>Survives screen photography and print-and-scan degradation.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

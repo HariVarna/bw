@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Access Ledger{% endblock %}
+{% block page_title %}Cryptographic Blockchain Access Ledger{% endblock %}
+
+{% block content %}
+
+<!-- Ledger Status & Live Audit Trigger Card -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+      </svg>
+      Append-Only Blockchain Integrity Engine
+    </h3>
+    <button id="btn-verify-ledger" class="btn btn-primary btn-sm">
+      <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      Audit Cryptographic Integrity
+    </button>
+  </div>
+  <div class="card-body">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;margin-bottom:16px;">
+      <div style="background:#f8fafc;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Ledger State</div>
+        <div style="margin-top:4px;">
+          {% if stats.is_valid %}
+          <span class="status-badge badge-valid"><span class="pulse-dot"></span> 100% CRYPTO INTACT</span>
+          {% else %}
+          <span class="status-badge badge-danger"><span class="pulse-dot"></span> INTEGRITY COMPROMISED</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Total Blocks In Chain</div>
+        <div style="font-size:20px;font-weight:700;margin-top:2px;">{{ stats.total_blocks }}</div>
+      </div>
+
+      <div style="background:#f8fafc;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Signed Custody Events</div>
+        <div style="font-size:20px;font-weight:700;margin-top:2px;">{{ stats.total_events }}</div>
+      </div>
+
+      <div style="background:#f8fafc;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Consensus Architecture</div>
+        <div style="font-size:12px;font-weight:600;margin-top:6px;color:var(--primary);">Permissioned Merkle Chain</div>
+      </div>
+    </div>
+
+    <!-- Live Audit Feedback Modal/Box -->
+    <div id="ledger-audit-result" style="display:none;background-color:#ffffff;border:1px solid var(--border-color);padding:16px;border-radius:var(--radius-sm);margin-top:12px;">
+      <div id="audit-status-badge" style="margin-bottom:8px;"></div>
+      <div id="audit-details-content" style="font-size:13px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Blockchain Blocks Explorer -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="3" y1="9" x2="21" y2="9"></line>
+        <line x1="9" y1="21" x2="9" y2="9"></line>
+      </svg>
+      Blockchain Blocks
+    </h3>
+    <span class="status-badge badge-info">{{ blocks|length }} Blocks</span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Block #</th>
+            <th>Timestamp (UTC)</th>
+            <th>Events</th>
+            <th>Merkle Root (SHA-256)</th>
+            <th>Previous Block Hash</th>
+            <th>Block Hash</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in blocks %}
+          <tr>
+            <td class="font-mono" style="font-weight:700;color:var(--primary);">#{{ b.index }}</td>
+            <td class="font-mono" style="font-size:11px;">{{ b.timestamp[:19] }}</td>
+            <td><span class="status-badge badge-info" style="font-size:11px;">{{ b.events|length }} Events</span></td>
+            <td>
+              <span class="font-mono text-truncate-code" style="max-width:140px;" title="{{ b.merkle_root }}">{{ b.merkle_root }}</span>
+            </td>
+            <td>
+              <span class="font-mono text-truncate-code" style="max-width:140px;" title="{{ b.prev_hash }}">{{ b.prev_hash }}</span>
+            </td>
+            <td>
+              <span class="font-mono text-truncate-code" style="max-width:140px;font-weight:600;" title="{{ b.block_hash }}">{{ b.block_hash }}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Custody Access Events Table -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+      </svg>
+      Recorded Custody Access Events (Chronological Audit Trail)
+    </h3>
+    <span class="status-badge badge-info">{{ events|length }} Total Events</span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Event ID</th>
+            <th>Block</th>
+            <th>Copy ID</th>
+            <th>Action</th>
+            <th>Custodian</th>
+            <th>Location</th>
+            <th>Timestamp (UTC)</th>
+            <th>Ed25519 Signature</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ev in events %}
+          <tr>
+            <td class="font-mono" style="font-weight:600;color:var(--primary);">{{ ev.event_id }}</td>
+            <td class="font-mono">#{{ ev.block_index }}</td>
+            <td class="font-mono" style="font-weight:600;">{{ ev.copy_id }}</td>
+            <td>
+              <span class="status-badge badge-info" style="font-size:11px;">{{ ev.action }}</span>
+            </td>
+            <td class="font-mono">{{ ev.custodian_id }}</td>
+            <td>{{ ev.location }}</td>
+            <td class="font-mono" style="font-size:11px;">{{ ev.timestamp[:19] }}</td>
+            <td>
+              {% if ev.signature_valid %}
+              <span class="status-badge badge-valid" style="font-size:10px;">✓ ED25519 VALID</span>
+              {% else %}
+              <span class="status-badge badge-danger" style="font-size:10px;">✕ INVALID SIG</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted);">
+              No access events recorded yet.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

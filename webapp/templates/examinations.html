@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Examinations{% endblock %}
+{% block page_title %}Examination Question Papers{% endblock %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      Generate New Master Question Paper
+    </h3>
+  </div>
+  <div class="card-body">
+    <form action="{{ url_for('create_examination') }}" method="POST" style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:flex-end;">
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label" for="paper_id">Examination Paper ID</label>
+        <input type="text" id="paper_id" name="paper_id" class="form-control" value="QP-2026-CS801-AUTUMN" placeholder="e.g. QP-2026-CS801-AUTUMN" required>
+        <span style="font-size:11px;color:var(--text-muted);">Generates standard university engineering paper with Part A (10 x 2 marks) and Part B (5 x 16 marks).</span>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Generate Master Paper
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+      </svg>
+      Registered Examination Question Papers
+    </h3>
+    <span class="status-badge badge-info">{{ examinations|length }} Papers Registered</span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Paper ID</th>
+            <th>Course Title</th>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Max Marks</th>
+            <th>Dataset</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exam in examinations %}
+          <tr>
+            <td class="font-mono" style="font-weight:700;color:var(--primary);">{{ exam.paper_id }}</td>
+            <td>
+              <div style="font-weight:600;">{{ exam.course_code }}</div>
+              <div style="font-size:12px;color:var(--text-muted);">{{ exam.course_title }}</div>
+            </td>
+            <td>{{ exam.exam_date }}</td>
+            <td>{{ exam.duration_minutes }} Mins</td>
+            <td>{{ exam.max_marks }}</td>
+            <td>
+              {% if exam.is_demo %}
+              <span class="status-badge badge-demo">DEMONSTRATION</span>
+              {% else %}
+              <span class="status-badge badge-info">LIVE</span>
+              {% endif %}
+            </td>
+            <td>
+              <button onclick="togglePreview('{{ exam.paper_id }}')" class="btn btn-secondary btn-sm">
+                View Paper Text
+              </button>
+            </td>
+          </tr>
+          <tr id="preview-{{ exam.paper_id }}" style="display:none;background-color:#f1f5f9;">
+            <td colspan="7" style="padding:20px;">
+              <h4 style="font-size:13px;font-weight:700;margin-bottom:8px;">Rendered Examination Paper Content</h4>
+              <pre style="background:#ffffff;border:1px solid var(--border-color);padding:16px;border-radius:var(--radius-sm);font-size:11px;max-height:280px;overflow-y:auto;white-space:pre-wrap;font-family:var(--font-mono);">{{ exam.raw_text }}</pre>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">
+              No examinations registered yet. Click "Generate Master Paper" above.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePreview(id) {
+  var row = document.getElementById('preview-' + id);
+  if (row.style.display === 'none') {
+    row.style.display = 'table-row';
+  } else {
+    row.style.display = 'none';
+  }
+}
+</script>
+
+{% endblock %}

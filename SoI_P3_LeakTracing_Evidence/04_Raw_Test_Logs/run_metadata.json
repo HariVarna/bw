@@ -1,13 +1,13 @@
 {
-  "run_id": "RUN-SOI-P3-20261031-161854",
-  "execution_timestamp_utc": "2026-10-31T16:18:54.150281+00:00",
+  "run_id": "RUN-SOI-P3-20261031-164934",
+  "execution_timestamp_utc": "2026-10-31T16:49:34.362919+00:00",
   "project": "Blockchain-Based Leak Tracing for Examination Question Papers",
   "institution": "School of Innovation",
   "academic_year": "2026-27",
   "phase": "Phase 3: Proof of Concept",
   "concept_id": "I01",
   "artifact_version": "v0.3.0-poc",
-  "git_commit": "d40487ae9053fe7cfc280328a076b03646011763",
+  "git_commit": "033733096dd3ae698678dce660839606f3fc3f03",
   "environment": {
     "os": "Windows",
     "os_release": "11",
@@ -38,8 +38,8 @@
       "target_latency": "<= 5.0 seconds per event",
       "comparator_baseline": "Manual register (30 - 60 seconds)",
       "events_benchmarked": 50,
-      "actual_avg_time_ms": 0.2514,
-      "actual_max_time_ms": 0.5503,
+      "actual_avg_time_ms": 0.3484,
+      "actual_max_time_ms": 0.8093,
       "target_cost": "INR 0 (Free)",
       "actual_cost": "INR 0.0",
       "target_met": true

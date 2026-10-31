@@ -26,13 +26,39 @@
 
 ## Quick Start
 
+### 1. Web Application Dashboard (Recommended)
+
 ```powershell
 # Install dependencies
-pip install cryptography pillow
+pip install -r requirements.txt
 
+# Launch Institutional Security Dashboard
+python -m webapp.app
+```
+Open your browser at `http://127.0.0.1:5000` to access the cybersecurity investigation dashboard.
+
+### 2. Automated Test Protocol & CLI Verification
+
+```powershell
 # Execute complete test protocol (generates raw logs & runs calculations)
 python tests/run_all_tests.py
+
+# Run automated webapp test suite
+python -m pytest tests/test_webapp.py
 
 # Run interactive CLI
 python -m src.cli --help
 ```
+
+---
+
+## Web Application Navigation & Capabilities
+
+* **Dashboard (`/dashboard`):** High-level metrics, live cryptographic ledger health check, interactive 7-stage workflow lifecycle diagram, recent activities, and 1-click demonstration dataset controls.
+* **Examinations (`/examinations`):** Question paper generator and plain-text review.
+* **Custodians (`/custodians`):** Institutional directory of examination officers and Ed25519 public keys.
+* **Fingerprinted Copies (`/copies`):** Multi-layer serialized copies inspector (Layer 1 Zero-Width, Layer 2 Syntactic Permutation, Layer 3 Visual Corner Micro-Grid).
+* **Access Ledger (`/ledger`):** Blockchain block explorer, Merkle root verifier, and live cryptographic audit.
+* **Leak Investigation (`/investigation`):** Forensic leak attribution tool for text excerpts and images with pre-packaged demo samples.
+* **Reports (`/reports`):** Official SoI Phase 3 Frozen Test Protocol results, raw CSV logs, and quantitative derivations.
+* **System Information (`/system-info`):** Architectural specifications, cryptographic standards, and runtime diagnostics.

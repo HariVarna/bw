@@ -6,3 +6,8 @@ demo_data/
 data_poc/
 .vscode/
 .idea/
+instance/
+webapp/instance/
+*.db
+*.sqlite
+webapp/static/uploads/

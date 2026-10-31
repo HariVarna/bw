@@ -1,0 +1,30 @@
+======================================================================
+EXAMINATION PAPER: CS801 - DISTRIBUTED LEDGER TECHNOLOGIES & CRYPTOGRAPHIC SYSTEMS‍​‌​​​​‌‌​‌​‌​​​​​‌​‌‌​​‌​​‌​‌‌​‌​​‌‌​​​​​​‌‌​​​‌‍
+Paper ID: QP-2026-CS801-AUTUMN | Date: 2026-11-15 | Duration: 180 Mins | Max Marks: 100
+======================================================================
+
+INSTRUCTIONS TO CANDIDATES:
+  1. Answer ALL questions in Part A and any FIVE questions from Part B.
+  2. Standard scientific calculators are permitted; programmable calculators and mobile devices are strictly prohibited.
+  3. Assume suitable missing data if any, and state the assumptions clearly.
+  4. Write answers legibly; marks are allocated based on technical rigor and clarity.
+
+--- PART A — (10 x 2 = 20 Marks) (Marks: 20) ---
+  Q1. State the Byzantine Generals Problem and define Byzantine Fault Tolerance (BFT). [2 Marks]
+  Q2. Differentiate between Proof of Work (PoW) and Proof of Stake (PoS) consensus mechanisms. [2 Marks]
+  Q3. Define cryptographic hash collision resistance and preimage resistance. [2 Marks]
+  Q4. Explain the role of the Merkle Tree root in SPV (Simplified Payment Verification) nodes. [2 Marks]
+  Q5. What is an UTXO? How does it prevent the double-spending problem? [2 Marks]
+  Q6. Describe the operational difference between public permissionless and consortium blockchains. [2 Marks]
+  Q7. What are zero-knowledge proofs (ZKP)? Name two practical applications. [2 Marks]
+  Q8. Explain the significance of nonce in block header construction. [2 Marks]
+  Q9. How does asymmetric cryptography ensure non-repudiation in digital transactions? [2 Marks]
+  Q10. Define smart contract reentrancy vulnerability and how it is mitigated. [2 Marks]
+
+--- PART B — (5 x 16 = 80 Marks) (Marks: 80) ---
+  Q1. Design a permissioned ledger protocol for high-security academic document custody. Include block structure, participant roles, and Merkle tree validation. [16 Marks]
+  Q2. Analyze the security vulnerabilities of zero-width steganography versus robust visual micro-watermarking under aggressive image compression and optical character recognition (OCR). [16 Marks]
+  Q3. Construct a complete consensus verification algorithm for a 4-node PBFT network under one malicious validator node. [16 Marks]
+  Q4. Explain the mechanics of elliptic curve digital signatures (Ed25519 vs ECDSA secp256k1). Evaluate key generation, signature generation, and verification complexity. [16 Marks]
+  Q5. Discuss the privacy-preservation versus auditability trade-off in distributed ledgers for national examination logistics. [16 Marks]
+======================================================================

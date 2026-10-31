@@ -1,0 +1,6 @@
+# Dependencies for Blockchain-Based Leak Tracing for Examination Question Papers
+# Python 3.10+ compatible
+
+Flask>=3.0.0
+cryptography>=42.0.0
+Pillow>=10.0.0

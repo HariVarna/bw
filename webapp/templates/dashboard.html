@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Overview{% endblock %}
+{% block page_title %}Examination Security Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Demo Dataset Alert Banner -->
+{% if is_demo %}
+<div class="demo-banner">
+  <div class="demo-banner-content">
+    <h4>
+      <svg style="width:18px;height:18px;color:#38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      Demonstration Dataset Active
+    </h4>
+    <p>Loaded standard academic prototype records (1 Exam, 4 Custodians, 8 Fingerprinted Copies, 24 Ledger Events, 2 Sample Cases).</p>
+  </div>
+  <div class="demo-banner-actions">
+    <button id="btn-reset-demo" class="btn btn-outline-danger btn-sm">
+      Reset Demonstration Data
+    </button>
+  </div>
+</div>
+{% endif %}
+
+<!-- Key Metrics Grid -->
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-data">
+      <h3>Registered Exams</h3>
+      <div class="metric-value">{{ counts.examinations }}</div>
+    </div>
+    <div class="metric-icon-box icon-blue">
+      <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+    </div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-data">
+      <h3>Registered Custodians</h3>
+      <div class="metric-value">{{ counts.custodians }}</div>
+    </div>
+    <div class="metric-icon-box icon-green">
+      <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-data">
+      <h3>Fingerprinted Copies</h3>
+      <div class="metric-value">{{ counts.fingerprinted_copies }}</div>
+    </div>
+    <div class="metric-icon-box icon-purple">
+      <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-data">
+      <h3>Blockchain Access Events</h3>
+      <div class="metric-value">{{ counts.recorded_events }}</div>
+    </div>
+    <div class="metric-icon-box icon-amber">
+      <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-data">
+      <h3>Leak Investigations</h3>
+      <div class="metric-value">{{ counts.investigations }}</div>
+    </div>
+    <div class="metric-icon-box icon-slate">
+      <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Workflow Diagram -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 17 12 22 22 17"></polyline>
+        <polyline points="2 12 12 17 22 12"></polyline>
+      </svg>
+      Examination Paper Custody & Leak Tracing Architecture (Concept I01)
+    </h3>
+    <span class="status-badge badge-info">7-STAGE PROTOCOL</span>
+  </div>
+  <div class="card-body">
+    <div class="workflow-steps">
+      <div class="workflow-step">
+        <div class="step-num">1</div>
+        <div class="step-title">Master Paper</div>
+        <div class="step-desc">University Controller of Examinations drafts canonical exam paper.</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">2</div>
+        <div class="step-title">Multi-Layer Fingerprint</div>
+        <div class="step-desc">Injects Layer 1 (Zero-Width), Layer 2 (Syntactic), Layer 3 (Micro-Grid).</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">3</div>
+        <div class="step-title">Ed25519 Signing</div>
+        <div class="step-desc">Every copy is signed with asymmetric cryptographic keypair.</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">4</div>
+        <div class="step-title">Blockchain Ledger</div>
+        <div class="step-desc">Immutable append-only blocks with SHA-256 Merkle root trees.</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">5</div>
+        <div class="step-title">Center Custody</div>
+        <div class="step-desc">Physical dispatch and vault handovers cryptographically recorded.</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">6</div>
+        <div class="step-title">Leak Occurrence</div>
+        <div class="step-desc">Leaked text snippet, screenshot, or scan surfaces during exam.</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">7</div>
+        <div class="step-title">Forensic Attribution</div>
+        <div class="step-desc">Tracer extracts copy ID, queries ledger, and pinpoints responsible custodian.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Split Section: Recent Activity & Ledger Health -->
+<div class="content-grid-2">
+  <!-- Left Column: Recent Examination Records -->
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        Recent Examination Records
+      </h3>
+      <a href="{{ url_for('examinations') }}" class="btn btn-secondary btn-sm">View All</a>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Paper ID</th>
+              <th>Course</th>
+              <th>Exam Date</th>
+              <th>Duration</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for exam in examinations %}
+            <tr>
+              <td class="font-mono" style="font-weight:600;color:var(--primary);">{{ exam.paper_id }}</td>
+              <td>
+                <div style="font-weight:600;">{{ exam.course_code }}</div>
+                <div style="font-size:11px;color:var(--text-muted);">{{ exam.course_title }}</div>
+              </td>
+              <td>{{ exam.exam_date }}</td>
+              <td>{{ exam.duration_minutes }} mins</td>
+              <td>
+                {% if exam.is_demo %}
+                <span class="status-badge badge-demo">DEMO</span>
+                {% else %}
+                <span class="status-badge badge-info">LIVE</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5" style="text-align:center;padding:24px;color:var(--text-muted);">
+                No examinations registered yet. Click "Demo Data" above to initialize.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Ledger Cryptographic Health & Live Audit -->
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+        Ledger Health & Integrity
+      </h3>
+      <button id="btn-verify-ledger" class="btn btn-primary btn-sm">
+        Verify Cryptography
+      </button>
+    </div>
+    <div class="card-body">
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Cryptographic Chain Status</div>
+        {% if ledger_stats.is_valid %}
+        <span class="status-badge badge-valid" style="font-size:13px;padding:6px 12px;">
+          <span class="pulse-dot"></span> 100% INTACT & VERIFIED
+        </span>
+        {% else %}
+        <span class="status-badge badge-danger" style="font-size:13px;padding:6px 12px;">
+          <span class="pulse-dot"></span> TAMPERING DETECTED ({{ ledger_stats.error_count }} Errors)
+        </span>
+        {% endif %}
+      </div>
+
+      <div style="background-color:#f8fafc;padding:12px;border-radius:var(--radius-sm);font-size:12px;margin-bottom:16px;border:1px solid var(--border-color);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="color:var(--text-muted);">Total Blocks:</span>
+          <strong>{{ ledger_stats.total_blocks }}</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="color:var(--text-muted);">Total Signed Events:</span>
+          <strong>{{ ledger_stats.total_events }}</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:var(--text-muted);">Latest Block Hash:</span>
+          <span class="font-mono text-truncate-code" style="max-width:140px;">{{ ledger_stats.latest_block_hash }}</span>
+        </div>
+      </div>
+
+      <!-- Live Audit Feedback Area -->
+      <div id="ledger-audit-result" style="display:none;background-color:#ffffff;border:1px solid var(--border-color);padding:14px;border-radius:var(--radius-sm);">
+        <div id="audit-status-badge" style="margin-bottom:8px;"></div>
+        <div id="audit-details-content" style="font-size:12px;"></div>
+      </div>
+
+      <!-- Recent System Activity -->
+      <div style="margin-top:20px;">
+        <h4 style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:12px;">Audit & Custody Logs</h4>
+        <div class="activity-list">
+          {% for act in recent_activities %}
+          <div class="activity-item">
+            <div class="activity-dot {{ act.status }}"></div>
+            <div>
+              <div class="activity-text">{{ act.details }}</div>
+              <div class="activity-time font-mono">{{ act.timestamp[:19] }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

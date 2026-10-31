@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Custodians{% endblock %}
+{% block page_title %}Authorized Examination Custodians{% endblock %}
+
+{% block content %}
+
+<div class="content-grid-2">
+  <!-- Left Column: Custodians List -->
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+        </svg>
+        Institutional Custodian Directory
+      </h3>
+      <span class="status-badge badge-info">{{ custodians|length }} Custodians</span>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Custodian ID</th>
+              <th>Officer Name</th>
+              <th>Role</th>
+              <th>Center</th>
+              <th>Ed25519 Public Key</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in custodians %}
+            <tr>
+              <td class="font-mono" style="font-weight:700;color:var(--primary);">{{ c.custodian_id }}</td>
+              <td style="font-weight:600;">{{ c.name }}</td>
+              <td><span class="status-badge badge-info" style="font-size:11px;">{{ c.role }}</span></td>
+              <td class="font-mono">{{ c.center_code }}</td>
+              <td>
+                <span class="font-mono text-truncate-code" style="max-width:140px;" title="{{ c.public_key }}">{{ c.public_key }}</span>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);">
+                No custodians registered yet.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Register New Custodian -->
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Register New Custodian
+      </h3>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('register_custodian') }}" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="custodian_id">Custodian ID</label>
+          <input type="text" id="custodian_id" name="custodian_id" class="form-control" placeholder="e.g. CUST-05-SUPT" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="name">Officer Full Name</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Prof. Sundar Raman" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="role">Custodial Role</label>
+          <select id="role" name="role" class="form-control" required>
+            <option value="SUPERINTENDENT">Chief Superintendent</option>
+            <option value="PRINTER">Confidential Printing Officer</option>
+            <option value="COE">Controller of Examinations</option>
+            <option value="INVIGILATOR">Exam Hall Invigilator</option>
+            <option value="SECURITY_ESCORT">Armed Vault Transit Escort</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="center_code">Examination Center Code</label>
+          <input type="text" id="center_code" name="center_code" class="form-control" placeholder="e.g. CENTER-103" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          Generate Ed25519 Keypair & Register
+        </button>
+      </form>
+
+      <div style="margin-top:16px;background-color:#f8fafc;padding:12px;border-radius:var(--radius-sm);font-size:11px;color:var(--text-muted);border:1px solid var(--border-color);">
+        <strong>Cryptographic Security Note:</strong> Registering an examination custodian automatically synthesizes a high-assurance Ed25519 elliptic curve keypair conforming to RFC 8032. Private keys sign custody handover events, guaranteeing non-repudiation.
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

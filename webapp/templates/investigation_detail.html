@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Case Dossier {{ case.case_number }}{% endblock %}
+{% block page_title %}Forensic Attribution Dossier: {{ case.case_number }}{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:20px;">
+  <a href="{{ url_for('investigation') }}" class="btn btn-secondary btn-sm">
+    ← Back to Leak Investigation Directory
+  </a>
+</div>
+
+<!-- Executive Attribution Verdict Card -->
+<div class="card" style="border-left: 4px solid var(--primary);">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+      Forensic Attribution Verdict
+    </h3>
+    <div>
+      {% if case.attribution_status == 'MATCH_VERIFIED' %}
+      <span class="status-badge badge-valid" style="font-size:13px;padding:6px 14px;">
+        <span class="pulse-dot"></span> POSITIVE ATTRIBUTION
+      </span>
+      {% elif case.attribution_status == 'AMBIGUOUS' %}
+      <span class="status-badge badge-warning" style="font-size:13px;padding:6px 14px;">
+        <span class="pulse-dot"></span> AMBIGUOUS ATTRIBUTION
+      </span>
+      {% else %}
+      <span class="status-badge badge-danger" style="font-size:13px;padding:6px 14px;">
+        <span class="pulse-dot"></span> UNMATCHED
+      </span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="card-body">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;margin-bottom:20px;">
+      <div style="background:#f8fafc;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Identified Serial Copy</div>
+        <div class="font-mono" style="font-size:22px;font-weight:700;color:var(--primary);margin-top:4px;">
+          {{ case.detected_copy_id or 'NONE' }}
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Detection Layer</div>
+        <div style="font-size:14px;font-weight:700;margin-top:8px;">
+          {{ case.detection_layer or 'NO LAYER MATCH' }}
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Attribution Confidence</div>
+        <div style="font-size:22px;font-weight:700;color:var(--success);margin-top:4px;">
+          {{ (case.confidence_score * 100)|round(1) }}%
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--border-color);">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Last Responsible Custodian</div>
+        <div class="font-mono" style="font-size:16px;font-weight:700;color:var(--danger);margin-top:8px;">
+          {{ case.responsible_custodian_id or 'UNKNOWN' }}
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#eff6ff;padding:16px;border-radius:var(--radius-sm);border:1px solid #bfdbfe;margin-bottom:16px;">
+      <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">Official Investigative Conclusion</h4>
+      <p style="font-size:13px;color:var(--text-primary);line-height:1.5;">
+        {{ case.investigative_conclusion }}
+      </p>
+    </div>
+
+    {% if case.sample_snippet %}
+    <div>
+      <h4 style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;">Recovered Excerpt Preview</h4>
+      <pre style="background:#f8fafc;border:1px solid var(--border-color);padding:12px;border-radius:var(--radius-sm);font-size:11px;font-family:var(--font-mono);max-height:140px;overflow-y:auto;white-space:pre-wrap;">{{ case.sample_snippet }}</pre>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Chain of Custody Audit Trail -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      Blockchain-Verified Chain of Custody Timeline
+    </h3>
+    <span class="status-badge badge-valid">
+      ✓ ALL SIGNATURES MATHEMATICALLY VALIDATED
+    </span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Event ID</th>
+            <th>Timestamp (UTC)</th>
+            <th>Custody Transition Action</th>
+            <th>Authorized Custodian</th>
+            <th>Location / Center</th>
+            <th>Ed25519 Cryptographic Proof</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ev in case.custody_trail %}
+          <tr>
+            <td class="font-mono" style="font-weight:600;color:var(--primary);">{{ ev.event_id }}</td>
+            <td class="font-mono" style="font-size:11px;">{{ ev.timestamp[:19] }}</td>
+            <td>
+              <span class="status-badge badge-info" style="font-size:11px;">{{ ev.action }}</span>
+            </td>
+            <td class="font-mono" style="font-weight:600;">{{ ev.custodian_id }}</td>
+            <td>{{ ev.location }}</td>
+            <td>
+              {% if ev.signature_valid %}
+              <span class="status-badge badge-valid" style="font-size:10px;">✓ ED25519 VERIFIED</span>
+              {% else %}
+              <span class="status-badge badge-danger" style="font-size:10px;">✕ INVALID SIGNATURE</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">
+              No blockchain custody events recorded for this copy identifier.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

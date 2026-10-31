@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Leak Investigation{% endblock %}
+{% block page_title %}Forensic Document Leak Investigation{% endblock %}
+
+{% block content %}
+
+<!-- Investigation Submission Form -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        <line x1="11" y1="8" x2="11" y2="14"></line>
+        <line x1="8" y1="11" x2="14" y2="11"></line>
+      </svg>
+      Initiate Forensic Leak Attribution
+    </h3>
+  </div>
+  <div class="card-body">
+    <form action="{{ url_for('trace_leak') }}" method="POST" enctype="multipart/form-data">
+      
+      <!-- Pre-packaged demonstration samples dropdown for quick testing -->
+      <div class="form-group" style="background:#eff6ff;padding:14px;border-radius:var(--radius-sm);border:1px solid #bfdbfe;">
+        <label class="form-label" for="preloaded_sample" style="color:var(--primary);">
+          <strong>⚡ Quick-Select Pre-Packaged Leak Sample (For Instant Review):</strong>
+        </label>
+        <select id="preloaded_sample" name="preloaded_sample" class="form-control">
+          <option value="">-- Or choose a pre-packaged test snippet below --</option>
+          <option value="leak_sample_digital_copy3.txt">leak_sample_digital_copy3.txt (Direct Digital Leak of CPY-03 — Layer 1 Zero-Width)</option>
+          <option value="leak_sample_retyped_copy2.txt">leak_sample_retyped_copy2.txt (Manual Retyped Leak of CPY-02 — Layer 2 Syntactic Permutation)</option>
+          <option value="leak_sample_image_copy1.png">leak_sample_image_copy1.png (Smartphone/Scanned Image of CPY-01 — Layer 3 Visual Grid)</option>
+        </select>
+        <span style="font-size:11px;color:var(--text-muted);margin-top:4px;display:block;">
+          Selecting one of these test cases will immediately evaluate the multi-layer extraction pipeline against pre-recorded artifacts.
+        </span>
+      </div>
+
+      <div style="display:flex;align-items:center;margin:16px 0;text-align:center;">
+        <div style="flex:1;border-bottom:1px solid var(--border-color);"></div>
+        <span style="padding:0 12px;font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Or Submit Custom Excerpt</span>
+        <div style="flex:1;border-bottom:1px solid var(--border-color);"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sample_text">Paste Recovered Text Snippet</label>
+        <textarea id="sample_text" name="sample_text" class="form-control" placeholder="Paste leaked exam excerpt, social media transcription, or copy-pasted text here..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sample_file">Or Upload Image / Text File (.png, .jpg, .txt)</label>
+        <input type="file" id="sample_file" name="sample_file" class="form-control">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="padding:10px 24px;font-size:14px;">
+        <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        Execute Multi-Layer Forensic Tracing
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Past Forensic Dossiers Table -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      Forensic Investigation Case History
+    </h3>
+    <span class="status-badge badge-info">{{ investigations|length }} Cases Recorded</span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Case ID</th>
+            <th>Sample File</th>
+            <th>Detected Copy</th>
+            <th>Detection Layer</th>
+            <th>Confidence</th>
+            <th>Attribution</th>
+            <th>Responsible Custodian</th>
+            <th>Timestamp</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inv in investigations %}
+          <tr>
+            <td class="font-mono" style="font-weight:700;color:var(--primary);">{{ inv.case_number }}</td>
+            <td class="font-mono" style="font-size:11px;">{{ inv.sample_filename }}</td>
+            <td class="font-mono" style="font-weight:700;">
+              {% if inv.detected_copy_id %}
+              <span style="color:var(--primary);">{{ inv.detected_copy_id }}</span>
+              {% else %}
+              <span style="color:var(--text-muted);">None</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if inv.detection_layer %}
+              <span class="status-badge badge-info" style="font-size:10px;">{{ inv.detection_layer }}</span>
+              {% else %}
+              <span class="status-badge badge-danger" style="font-size:10px;">UNMATCHED</span>
+              {% endif %}
+            </td>
+            <td>
+              <strong>{{ (inv.confidence_score * 100)|round(1) }}%</strong>
+            </td>
+            <td>
+              {% if inv.attribution_status == 'MATCH_VERIFIED' %}
+              <span class="status-badge badge-valid" style="font-size:10px;">MATCH VERIFIED</span>
+              {% elif inv.attribution_status == 'AMBIGUOUS' %}
+              <span class="status-badge badge-warning" style="font-size:10px;">AMBIGUOUS</span>
+              {% else %}
+              <span class="status-badge badge-danger" style="font-size:10px;">UNMATCHED</span>
+              {% endif %}
+            </td>
+            <td class="font-mono" style="font-weight:600;">
+              {{ inv.responsible_custodian_id or 'UNKNOWN' }}
+            </td>
+            <td class="font-mono" style="font-size:11px;">{{ inv.created_at[:19] }}</td>
+            <td>
+              <a href="{{ url_for('view_investigation', case_number=inv.case_number) }}" class="btn btn-secondary btn-sm" style="padding:3px 8px;font-size:11px;">
+                Dossier →
+              </a>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="9" style="text-align:center;padding:32px;color:var(--text-muted);">
+              No leak investigations recorded yet. Submit a sample above to execute tracing.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

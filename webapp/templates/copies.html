@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Fingerprinted Copies{% endblock %}
+{% block page_title %}Multi-Layer Fingerprinted Copies{% endblock %}
+
+{% block content %}
+
+<!-- Batch Generation Card -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+      </svg>
+      Generate Fingerprinted Batch
+    </h3>
+  </div>
+  <div class="card-body">
+    <form action="{{ url_for('generate_copies') }}" method="POST" style="display:grid;grid-template-columns:2fr 1fr auto;gap:16px;align-items:flex-end;">
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label" for="paper_id">Select Examination Paper</label>
+        <select id="paper_id" name="paper_id" class="form-control" required>
+          {% for ex in examinations %}
+          <option value="{{ ex.paper_id }}">{{ ex.paper_id }} ({{ ex.course_code }} - {{ ex.course_title }})</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label" for="count">Quantity of Copies</label>
+        <input type="number" id="count" name="count" class="form-control" value="4" min="1" max="256" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Generate Multi-Layer Copies
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Fingerprinted Copies Directory -->
+<div class="card">
+  <div class="card-header">
+    <h3>
+      <svg style="width:18px;height:18px;color:var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+      </svg>
+      Serialized Question Paper Copies & Steganographic Signatures
+    </h3>
+    <span class="status-badge badge-info">{{ copies|length }} Copies Generated</span>
+  </div>
+  <div class="card-body" style="padding:0;">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Copy ID</th>
+            <th>Paper ID</th>
+            <th>Assigned Custodian</th>
+            <th>Center</th>
+            <th>Syntactic Vector (Layer 2)</th>
+            <th>Security Layer Status</th>
+            <th>Artifacts</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cp in copies %}
+          <tr>
+            <td class="font-mono" style="font-weight:700;color:var(--primary);">{{ cp.copy_id }}</td>
+            <td class="font-mono">{{ cp.paper_id }}</td>
+            <td>
+              <div style="font-weight:600;">{{ cp.custodian_name or cp.custodian_id }}</div>
+              <div style="font-size:11px;color:var(--text-muted);">{{ cp.custodian_id }} ({{ cp.custodian_role }})</div>
+            </td>
+            <td class="font-mono">{{ cp.center_code }}</td>
+            <td>
+              <span class="font-mono" style="background:#f1f5f9;padding:2px 8px;border-radius:4px;font-size:11px;border:1px solid #cbd5e1;">
+                [{{ cp.syntactic_vector|join(', ') }}]
+              </span>
+            </td>
+            <td>
+              <span class="status-badge badge-valid" style="font-size:10px;" title="Layer 1: Zero-Width + Layer 2: Syntactic + Layer 3: Visual Grid">
+                ✓ L1/L2/L3 ARMORED
+              </span>
+            </td>
+            <td>
+              <div style="display:flex;gap:6px;">
+                {% if cp.text_file %}
+                <a href="{{ url_for('serve_generated_copy', filename=cp.text_file) }}" target="_blank" class="btn btn-secondary btn-sm" style="padding:3px 8px;font-size:11px;">
+                  .TXT
+                </a>
+                {% endif %}
+                {% if cp.image_file %}
+                <a href="{{ url_for('serve_generated_copy', filename=cp.image_file) }}" target="_blank" class="btn btn-secondary btn-sm" style="padding:3px 8px;font-size:11px;">
+                  .PNG
+                </a>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">
+              No fingerprinted copies generated yet.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="background:#f8fafc;">
+  <div class="card-body" style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+    <h4 style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">Steganographic Defense-in-Depth Specification</h4>
+    <p><strong>Layer 1 (Zero-Width Unicode):</strong> Serial number is binary-encoded using invisible characters (<code>\u200b</code> and <code>\u200c</code> framed by <code>\u200d</code>). Survives direct copy-pasting from digital documents.</p>
+    <p><strong>Layer 2 (Syntactic Variations):</strong> Permutes instruction list formatting, mathematical phrasing, and section delimiters deterministically based on the vector above. Survives verbatim manual retyping.</p>
+    <p><strong>Layer 3 (Corner Micro-Pattern):</strong> High-contrast 16-bit binary micro-cell matrix rendered in the top-right margins of PNG copies. Survives screenshots, downscaling, and print-and-scan operations.</p>
+  </div>
+</div>
+
+{% endblock %}
