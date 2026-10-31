@@ -25,10 +25,11 @@ def simulate_copying(text: str) -> str:
 def simulate_retyping(text: str) -> str:
     """Simulate manual human transcription or basic OCR:
     
-    Zero-width unicode steganography is stripped, but phrasing is preserved.
+    Zero-width unicode steganography is completely stripped,
+    leaving only readable printable characters and syntactic variations.
     """
-    clean_text = "".join(ch for ch in text if ord(ch) >= 32 or ch in "\n\t")
-    return clean_text
+    # Exclude zero-width unicode steganography characters
+    return "".join(ch for ch in text if ch not in "\u200b\u200c\u200d")
 
 
 def simulate_screenshot(img: Image.Image) -> Image.Image:

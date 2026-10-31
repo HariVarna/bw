@@ -102,12 +102,13 @@ def decode_zw_to_string(text: str) -> Optional[str]:
 
 
 def derive_syntactic_vector(copy_idx: int) -> List[int]:
-    """Derive deterministic index choices for syntactic variations based on copy index."""
+    """Derive unique base-4 choice vector for 4 syntactic variation points (supports 256 unique copies)."""
+    val = max(0, copy_idx - 1)
     return [
-        (copy_idx + 0) % len(SYNTACTIC_RULES["inst_prefix"]),
-        (copy_idx + 1) % len(SYNTACTIC_RULES["calc_phrase"]),
-        (copy_idx + 2) % len(SYNTACTIC_RULES["mobile_phrase"]),
-        (copy_idx + 3) % len(SYNTACTIC_RULES["part_a_delim"]),
+        (val >> 0) % len(SYNTACTIC_RULES["inst_prefix"]),
+        (val >> 2) % len(SYNTACTIC_RULES["calc_phrase"]),
+        (val >> 4) % len(SYNTACTIC_RULES["mobile_phrase"]),
+        (val >> 6) % len(SYNTACTIC_RULES["part_a_delim"]),
     ]
 
 
@@ -123,6 +124,15 @@ def apply_fingerprint_to_text(
 
     # 1. Apply syntactic variations
     text = base_text
+
+    # Instruction prefix variation
+    prefix_fn = SYNTACTIC_RULES["inst_prefix"][vector[0]]
+    for i in range(1, 5):
+        orig_p = f"  {i}. "
+        new_p = prefix_fn(i)
+        if orig_p in text:
+            text = text.replace(orig_p, new_p, 1)
+
     # Replace default phrases with copy-specific variations
     default_calc = "Standard scientific calculators are permitted;"
     if default_calc in text:
@@ -236,6 +246,11 @@ def match_syntactic_fingerprint(
         if len(vector) < 4:
             continue
 
+        # Check instruction prefix
+        prefix_target = SYNTACTIC_RULES["inst_prefix"][vector[0]](1)
+        if prefix_target in text:
+            scores[cid] += 3
+
         # Check calc phrase
         calc_target = SYNTACTIC_RULES["calc_phrase"][vector[1]]
         if calc_target in text:
@@ -258,7 +273,7 @@ def match_syntactic_fingerprint(
     best_cid, best_score = sorted_scores[0]
     second_score = sorted_scores[1][1] if len(sorted_scores) > 1 else 0
 
-    max_possible = 9.0
+    max_possible = 12.0
     confidence = best_score / max_possible
 
     # Must have strict separation and at least 2 distinct matches to avoid ambiguity
