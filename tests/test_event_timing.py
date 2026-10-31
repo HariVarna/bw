@@ -76,7 +76,7 @@ def run_event_timing_test_suite(
             "Start/end or elapsed time": f"{elapsed_ms:.4f}",
             "Unit": "milliseconds",
             "Outcome": outcome,
-            "Notes": f"Target <= 5000 ms (5s). Incurred cost: ₹0 (Local permissioned ledger).",
+            "Notes": f"Target <= 5000 ms (5s). Incurred cost: INR 0 (Local permissioned ledger).",
         })
 
     # Commit block containing the 50 events

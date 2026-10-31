@@ -123,7 +123,7 @@ def main() -> None:
     print(f"  -> Average Latency: {timing_summary['avg_event_time_ms']:.4f} ms ({timing_summary['avg_event_time_sec']:.6f} s)")
     print(f"  -> Max Latency: {timing_summary['max_event_time_ms']:.4f} ms ({timing_summary['max_event_time_sec']:.6f} s)")
     print(f"  -> Target Met (<= 5.0 s): {timing_summary['target_met']}")
-    print(f"  -> Incurred Cost: ₹{timing_summary['actual_cost_inr']} (Target: ₹0)")
+    print(f"  -> Incurred Cost: INR {timing_summary['actual_cost_inr']} (Target: INR 0)")
     print(f"  -> Written to: {timing_csv_path.relative_to(ROOT_DIR)}\n")
 
     # =========================================================================
@@ -171,8 +171,8 @@ def main() -> None:
                 "events_benchmarked": timing_summary["events_tested"],
                 "actual_avg_time_ms": timing_summary["avg_event_time_ms"],
                 "actual_max_time_ms": timing_summary["max_event_time_ms"],
-                "target_cost": "₹0",
-                "actual_cost": f"₹{timing_summary['actual_cost_inr']}",
+                "target_cost": "INR 0 (Free)",
+                "actual_cost": f"INR {timing_summary['actual_cost_inr']}",
                 "target_met": timing_summary["target_met"],
             },
         },
