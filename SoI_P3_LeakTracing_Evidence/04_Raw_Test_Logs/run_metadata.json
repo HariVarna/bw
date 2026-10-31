@@ -1,0 +1,48 @@
+{
+  "run_id": "RUN-SOI-P3-20261031-161854",
+  "execution_timestamp_utc": "2026-10-31T16:18:54.150281+00:00",
+  "project": "Blockchain-Based Leak Tracing for Examination Question Papers",
+  "institution": "School of Innovation",
+  "academic_year": "2026-27",
+  "phase": "Phase 3: Proof of Concept",
+  "concept_id": "I01",
+  "artifact_version": "v0.3.0-poc",
+  "git_commit": "d40487ae9053fe7cfc280328a076b03646011763",
+  "environment": {
+    "os": "Windows",
+    "os_release": "11",
+    "os_version": "10.0.26300",
+    "architecture": "AMD64",
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "runtime": "CPython"
+  },
+  "command_executed": "python tests/run_all_tests.py",
+  "test_results_summary": {
+    "test_1_fingerprint_accuracy": {
+      "target": ">= 90% (18/20)",
+      "comparator_baseline": "1 in 10 (10%)",
+      "actual_tested": 20,
+      "actual_correct": 20,
+      "actual_accuracy_pct": 100.0,
+      "target_met": true
+    },
+    "test_2_ledger_integrity": {
+      "target": "100% (10/10)",
+      "comparator_baseline": "Editable register (0% detection)",
+      "actual_attacks_tested": 10,
+      "actual_detected": 10,
+      "actual_detection_pct": 100.0,
+      "target_met": true
+    },
+    "test_3_event_timing_and_cost": {
+      "target_latency": "<= 5.0 seconds per event",
+      "comparator_baseline": "Manual register (30 - 60 seconds)",
+      "events_benchmarked": 50,
+      "actual_avg_time_ms": 0.2514,
+      "actual_max_time_ms": 0.5503,
+      "target_cost": "INR 0 (Free)",
+      "actual_cost": "INR 0.0",
+      "target_met": true
+    }
+  }
+}
